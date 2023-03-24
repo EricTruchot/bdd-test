@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+  dotnet:
+    image: bddtest:container
+    # build:
+    #   dockerfile: Dockerfile 
+    ports:
+      - 4242:80
+      - 4243:443
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/dockerdemo.pfx
+    volumes:
+      - C:\Users\Eric.aspnet\https:/https
+    
+      # 63157
+      # http://localhost:63157/swagger/index.html
+
+  db:
+   image: postgres
+   ports:
+     - 5432:5432
+   restart: always
+   environment:
+     POSTGRES_USER: dtest
+     POSTGRES_PASSWORD: dtest
+     POSTGRES_DB: dtest
+   volumes:
+      - data:/var/lib/postgresql/data
+
+volumes:
+  data:
